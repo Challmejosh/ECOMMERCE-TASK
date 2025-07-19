@@ -20,6 +20,7 @@ const cartSlice = createSlice({
             const addedQuantity = {...target_Product,quantity:quant,uid: uuidv4()}
             const added = [...state.cart,addedQuantity]
             state.cart = added
+            toast.success("item added to cart")
             localStorage.setItem("exclusive-cart",JSON.stringify(added))
         },
         addQuantity: (state, action: PayloadAction<{ product: CartType; quantity: number }>) => {
@@ -37,6 +38,7 @@ const cartSlice = createSlice({
         update:(state,action:PayloadAction<CartType[]>)=>{
             const save = state.cart = action.payload.filter(product=>product.quantity>0)
             localStorage.setItem("exclusive-cart",JSON.stringify(save))
+            toast.success("cart updated")
         },
         load:(state)=>{
             const getState = localStorage.getItem("exclusive-cart")

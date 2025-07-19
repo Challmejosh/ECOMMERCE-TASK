@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { ProductType } from "../../../utils/types";
+import { toast } from "react-toastify";
 
 interface Wish{
     wishlist: ProductType[]
@@ -19,9 +20,11 @@ const wishListSlice = createSlice({
                     const updated = state.wishlist.filter(item => item.id.toLowerCase().trim() !== format);
                     state.wishlist = updated;
                     localStorage.setItem("exclusive-wishlist", JSON.stringify(updated));
+                    toast("item removed from wishlist ")
                 } else {
                     const updated = [...state.wishlist, action.payload];
                     state.wishlist = updated;
+                    toast.success("item added to wishlist ")
                     localStorage.setItem("exclusive-wishlist", JSON.stringify(updated));
                 }
         },

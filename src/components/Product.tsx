@@ -18,7 +18,9 @@ const Product =({products}:Prop)=>{
             {products?.map((product)=>(
                 <div key={product.id} className="min-w-[250px] w-full group flex flex-col gap-4 items-center justify-center  ">
                     <div  className="relative rounded-sm w-full flex items-center justify-center h-[250px] bg-[#F5F5F5] ">
-                        <img src={product.thumbnail} alt={product.title} className=" w-[150px] h-[150px] object-contain " />
+                        <Link to={`/product/${product.id}`}>
+                            <img src={product.thumbnail} alt={product.title} className=" w-[150px] h-[150px] object-contain " />
+                        </Link>
                         {product.percent&&<p className={`absolute top-3 left-5 text-xs w-fit py-1 px-3 rounded-md flex items-center justify-center text-[#fafafa] bg-[#DB4444] `}>
                             -{product.percent}% 
                         </p>}
@@ -37,7 +39,7 @@ const Product =({products}:Prop)=>{
                                 </>
                             }
                         </div>
-                        <div onClick={()=>dispatch(add({product,quantity:1}))} className="cursor-pointer z-50 py-2 px-5 rounded-b-sm absolute bottom-0 hidden w-0 group-hover:w-[100%] group-hover:flex duration-300 transfrom transition-all  bg-black text-white items-center justify-center text-center capitalize ">
+                        <div onClick={()=>dispatch(add({product,quantity:1}))} className="cursor-pointer z-50 py-2 px-5 rounded-b-sm absolute bottom-0 lg:hidden w-full lg:w-0 group-hover:w-[100%] group-hover:flex duration-300 transfrom transition-all  bg-black text-white items-center justify-center text-center capitalize ">
                             add to cart
                         </div>
                     </div>
