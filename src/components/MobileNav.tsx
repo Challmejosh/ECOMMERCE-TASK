@@ -1,12 +1,16 @@
-import { X, Search, User, ShoppingBag, Star, LogOutIcon } from "lucide-react"
+import { X, Search, User, ShoppingBag, Star, LogOutIcon, LogIn } from "lucide-react"
 import { useDispatch, useSelector } from "react-redux"
 import { toggle } from "../libs/redux/slice/navSlice"
 import { logout } from "../libs/firebase/logout"
 import { Link, useNavigate } from "react-router-dom"
 import { DropDown } from "./DesktopNav"
 import type { RootState } from "../libs/redux/store"
+import { useEffect, useState } from "react"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "../libs/firebase/firebase"
 
 export const MobileNav = ()=>{
+    const [user,setUser] = useState<boolean>(false)
     const dispatch = useDispatch()
     const nav = useSelector((state:RootState)=>state.nav.nav)
     const navigate = useNavigate()
@@ -21,6 +25,13 @@ export const MobileNav = ()=>{
         navigate("/signup")
         window.location.reload()
     }
+    useEffect(()=>{
+        onAuthStateChanged(auth,(user)=>{
+            if(user){
+                setUser(true)
+            }
+        })
+    },[])
     return (
         <div className={`${nav?"translate-x-0":"translate-x-full"} bg-white duration-300 transform transition-all flex flex-col items-start p-2 gap-5 justify-start w-full h-screen fixed inset-0 z-30 `}>
             <X onClick={()=>dispatch(toggle())} className=" " />
@@ -60,13 +71,23 @@ export const MobileNav = ()=>{
                 }
                 text="my reviews"
                 />
-                <DropDown 
+                {user&&<DropDown 
                 onClick={logOut}
                 icon={
                     <LogOutIcon />
                 }
                 text="logout"
-                />
+                />}
+                {!user&&
+                <div onClick={()=>navigate("/login")} className="">
+                    <DropDown 
+                    icon={
+                        <LogIn />
+                    }
+                    text="login"
+                    />
+                </div>
+                }
             </div>
         </div>
     )
